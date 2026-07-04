@@ -188,49 +188,53 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    document.querySelectorAll('.sidebar-btn[data-major]').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const major = this.dataset.major;
-            document.querySelectorAll('.sidebar-btn[data-major]').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
+document.querySelectorAll('.sidebar-btn[data-major]').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const major = this.dataset.major;
+        
+        // 更新按钮状态
+        document.querySelectorAll('.sidebar-btn[data-major]').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
 
-            const listPanel = document.getElementById('custom-replies-list');
-            const announcePanel = document.getElementById('announcement-panel');
-            const voicePanel = document.getElementById('voice-panel');
-            const titleEl = document.getElementById('cr-modal-title');
+        // 获取所有面板
+        const listPanel = document.getElementById('custom-replies-list');
+        const voicePanel = document.getElementById('voice-panel');
+        const titleEl = document.getElementById('cr-modal-title');
 
-            if (listPanel) listPanel.style.display = 'none';
-            if (announcePanel) announcePanel.style.display = 'none';
-            if (voicePanel) voicePanel.style.display = 'none';
+        // ⚠️ 关键：先隐藏所有面板
+        if (listPanel) listPanel.style.display = 'none';
+        if (voicePanel) voicePanel.style.display = 'none';
 
-            if (major === 'reply') {
-                if (listPanel) {
-                    listPanel.style.display = 'block';
-                    document.querySelectorAll('.reply-tab-btn').forEach(t => {
-                        if (t.dataset.tab === 'all') t.classList.add('active');
-                        else t.classList.remove('active');
-                    });
-                    if (typeof renderReplyLibrary === 'function') renderReplyLibrary();
-                }
-                if (titleEl) titleEl.textContent = '回复库';
-            } else if (major === 'atmosphere') {
-                if (listPanel) {
-                    listPanel.style.display = 'block';
-                    document.querySelectorAll('.reply-tab-btn').forEach(t => {
-                        if (t.dataset.tab === 'atmosphere') t.classList.add('active');
-                        else t.classList.remove('active');
-                    });
-                    if (typeof renderAtmosphereLibrary === 'function') renderAtmosphereLibrary();
-                }
-                if (titleEl) titleEl.textContent = '氛围感';
-         else if (major === 'voice') {
-                if (voicePanel) voicePanel.style.display = 'block';
-                if (titleEl) titleEl.textContent = '语音字卡';
-                renderVoiceList();
-                updateVoiceCount();
+        // 根据点击显示对应面板
+        if (major === 'reply') {
+            if (listPanel) {
+                listPanel.style.display = 'block';
+                document.querySelectorAll('.reply-tab-btn').forEach(t => {
+                    if (t.dataset.tab === 'all') t.classList.add('active');
+                    else t.classList.remove('active');
+                });
+                if (typeof renderReplyLibrary === 'function') renderReplyLibrary();
             }
-        });
+            if (titleEl) titleEl.textContent = '回复库';
+            
+        } else if (major === 'atmosphere') {
+            if (listPanel) {
+                listPanel.style.display = 'block';
+                document.querySelectorAll('.reply-tab-btn').forEach(t => {
+                    if (t.dataset.tab === 'atmosphere') t.classList.add('active');
+                    else t.classList.remove('active');
+                });
+                if (typeof renderAtmosphereLibrary === 'function') renderAtmosphereLibrary();
+            }
+            if (titleEl) titleEl.textContent = '氛围感';
+            
+        } else if (major === 'voice') {
+            if (voicePanel) voicePanel.style.display = 'block';
+            if (titleEl) titleEl.textContent = '语音字卡';
+            renderVoiceList();
+            updateVoiceCount();
+        }
     });
-
+});
     console.log('🎤 语音字卡模块加载完成 ✅');
 });
