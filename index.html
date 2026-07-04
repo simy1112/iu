@@ -1776,7 +1776,7 @@
                     支持 MP3、WAV、M4A、MP4 等，可多选，每条 ≤30MB
                 </div>
                 <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
-                    <input type="file" id="voice-file-input" accept="audio/*" multiple style="display:none;">
+                   <input type="file" id="voice-file-input" accept=".mp3,.wav,.m4a,.mp4,.aac,.ogg,.flac" multiple style="display:none;">
                     <button onclick="document.getElementById('voice-file-input').click()" style="padding:10px 20px; background:var(--accent-color); color:#fff; border:none; border-radius:10px; cursor:pointer; font-family:var(--font-family); font-size:13px; font-weight:600; transition:all 0.2s; box-shadow:0 2px 10px rgba(var(--accent-color-rgb),0.25);">
                         <i class="fas fa-folder-open"></i> 选择文件
                     </button>
