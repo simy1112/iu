@@ -205,34 +205,30 @@ document.querySelectorAll('.sidebar-btn[data-major]').forEach(btn => {
         if (listPanel) listPanel.style.display = 'none';
         if (voicePanel) voicePanel.style.display = 'none';
 
-        // 根据点击显示对应面板
-        if (major === 'reply') {
-            if (listPanel) {
-                listPanel.style.display = 'block';
-                document.querySelectorAll('.reply-tab-btn').forEach(t => {
-                    if (t.dataset.tab === 'all') t.classList.add('active');
-                    else t.classList.remove('active');
-                });
-                if (typeof renderReplyLibrary === 'function') renderReplyLibrary();
-            }
-            if (titleEl) titleEl.textContent = '回复库';
-            
-        } else if (major === 'atmosphere') {
-            if (listPanel) {
-                listPanel.style.display = 'block';
-                document.querySelectorAll('.reply-tab-btn').forEach(t => {
-                    if (t.dataset.tab === 'atmosphere') t.classList.add('active');
-                    else t.classList.remove('active');
-                });
-                if (typeof renderAtmosphereLibrary === 'function') renderAtmosphereLibrary();
-            }
-            if (titleEl) titleEl.textContent = '氛围感';
-            
-        } else if (major === 'voice') {
-            if (voicePanel) voicePanel.style.display = 'block';
-            if (titleEl) titleEl.textContent = '语音字卡';
-            renderVoiceList();
-            updateVoiceCount();
-        }
-    });
-});
+       // 根据点击显示对应面板
+if (major === 'reply') {
+    if (listPanel) {
+        listPanel.style.display = 'block';
+        document.querySelectorAll('.reply-tab-btn').forEach(t => {
+            if (t.dataset.tab === 'all') t.classList.add('active');
+            else t.classList.remove('active');
+        });
+        if (typeof renderReplyLibrary === 'function') renderReplyLibrary();
+    }
+    if (titleEl) titleEl.textContent = '回复库';
+} else if (major === 'atmosphere') {
+    if (listPanel) {
+        listPanel.style.display = 'block';
+        document.querySelectorAll('.reply-tab-btn').forEach(t => {
+            if (t.dataset.tab === 'atmosphere') t.classList.add('active');
+            else t.classList.remove('active');
+        });
+        if (typeof renderAtmosphereLibrary === 'function') renderAtmosphereLibrary();
+    }
+    if (titleEl) titleEl.textContent = '氛围感';
+} else if (major === 'voice') {
+    if (voicePanel) voicePanel.style.display = 'block';
+    if (titleEl) titleEl.textContent = '语音字卡';
+    renderVoiceList();
+    updateVoiceCount();
+}
