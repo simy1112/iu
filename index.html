@@ -2181,16 +2181,18 @@ function switchPanel(major) {
     const listPanel = document.getElementById('custom-replies-list');
     const voicePanel = document.getElementById('voice-panel');
     const titleEl = document.getElementById('cr-modal-title');
+    const subTabs = document.getElementById('cr-sub-tabs');  // ← 新增
 
     // 3. 全部隐藏
     if (listPanel) listPanel.style.display = 'none';
     if (voicePanel) voicePanel.style.display = 'none';
+    if (subTabs) subTabs.style.display = 'none';  // ← 新增
 
     // 4. 显示对应的
     if (major === 'reply' || major === 'atmosphere') {
         if (listPanel) {
             listPanel.style.display = 'block';
-            // 切换子标签（主字卡 / Emoji / 表情库）
+            if (subTabs) subTabs.style.display = 'flex';  // ← 新增
             if (major === 'reply') {
                 document.querySelectorAll('.reply-tab-btn').forEach(t => {
                     t.classList.toggle('active', t.dataset.tab === 'all');
@@ -2207,12 +2209,10 @@ function switchPanel(major) {
     } else if (major === 'voice') {
         if (voicePanel) voicePanel.style.display = 'block';
         if (titleEl) titleEl.textContent = '语音字卡';
-        // 刷新语音列表（如果有这个函数）
         if (typeof renderVoiceList === 'function') renderVoiceList();
         if (typeof updateVoiceCount === 'function') updateVoiceCount();
     }
 }
-
 // 页面加载完成后，默认激活回复库
 document.addEventListener('DOMContentLoaded', function() {
     // 确保默认显示回复库
