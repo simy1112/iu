@@ -236,5 +236,3 @@ document.querySelectorAll('.sidebar-btn[data-major]').forEach(btn => {
         }
     });
 });
-    console.log('🎤 语音字卡模块加载完成 ✅');
-});
