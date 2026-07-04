@@ -13,13 +13,11 @@ function handleVoiceImport(files) {
     if (!files || files.length === 0) return;
 
     for (const file of files) {
-        // 30MB 限制
         if (file.size > 30 * 1024 * 1024) {
             showNotification(`文件 "${file.name}" 超过30MB，已跳过`, 'error');
             continue;
         }
 
-        // 简单去重：同名同大小视为重复
         if (voiceLibrary.some(v => v.name === file.name && v.size === file.size)) {
             continue;
         }
@@ -100,18 +98,6 @@ function renderVoiceList() {
             </button>
         </div>
     `).join('');
-
-    // 添加 hover 效果（用 JS 简单绑定，也可用 CSS 处理）
-    document.querySelectorAll('.voice-item').forEach(el => {
-        el.addEventListener('mouseenter', () => {
-            el.style.borderColor = 'rgba(var(--accent-color-rgb), 0.3)';
-            el.style.boxShadow = '0 2px 12px rgba(0,0,0,0.06)';
-        });
-        el.addEventListener('mouseleave', () => {
-            el.style.borderColor = 'var(--border-color)';
-            el.style.boxShadow = 'none';
-        });
-    });
 }
 
 function updateVoiceCount() {
@@ -124,10 +110,7 @@ function updateVoiceCount() {
 // ============ 持久化存储 ============
 
 function saveVoiceLibrary() {
-    // 由于 File/Blob 不能直接序列化，使用 localforage 存储
     if (typeof localforage !== 'undefined') {
-        // 只存元数据，文件数据用 Base64 或 Blob 存储
-        // 这里用简单方式：存储文件名和大小，实际文件用 IndexedDB 存储
         const metaData = voiceLibrary.map(item => ({
             name: item.name,
             size: item.size,
@@ -135,12 +118,9 @@ function saveVoiceLibrary() {
             lastModified: item.lastModified
         }));
         localforage.setItem('voiceLibraryMeta', metaData);
-
-        // 存储文件数据（Blob）
         const fileData = voiceLibrary.map(item => item.data);
         localforage.setItem('voiceLibraryFiles', fileData);
     } else {
-        // fallback: localStorage（只能存小文件，不推荐）
         try {
             localStorage.setItem('voiceLibrary', JSON.stringify(voiceLibrary.map(item => ({
                 name: item.name,
@@ -190,7 +170,6 @@ function escapeHtml(text) {
 
 // ============ 初始化 ============
 
-// 暴露到全局
 window.voiceLibrary = voiceLibrary;
 window.getRandomVoice = getRandomVoice;
 window.getVoiceCount = getVoiceCount;
@@ -198,28 +177,23 @@ window.deleteVoice = deleteVoice;
 window.previewVoice = previewVoice;
 window.handleVoiceImport = handleVoiceImport;
 
-// 加载已保存的语音库
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function() {
     loadVoiceLibrary();
 
-    // 绑定文件输入事件
     const fileInput = document.getElementById('voice-file-input');
     if (fileInput) {
         fileInput.addEventListener('change', function(e) {
             handleVoiceImport(e.target.files);
-            this.value = ''; // 允许重复选择相同文件
+            this.value = '';
         });
     }
 
-    // 绑定侧边栏切换事件（语音面板切换）
     document.querySelectorAll('.sidebar-btn[data-major]').forEach(btn => {
         btn.addEventListener('click', function() {
             const major = this.dataset.major;
-            // 更新按钮状态
             document.querySelectorAll('.sidebar-btn[data-major]').forEach(b => b.classList.remove('active'));
             this.classList.add('active');
 
-            // 隐藏所有面板
             const listPanel = document.getElementById('custom-replies-list');
             const announcePanel = document.getElementById('announcement-panel');
             const voicePanel = document.getElementById('voice-panel');
@@ -229,35 +203,37 @@ document.addEventListener('DOMContentLoaded', () => {
             if (announcePanel) announcePanel.style.display = 'none';
             if (voicePanel) voicePanel.style.display = 'none';
 
-            // 显示对应面板
             if (major === 'reply') {
-                if (listPanel) listPanel.style.display = 'block';
+                if (listPanel) {
+                    listPanel.style.display = 'block';
+                    document.querySelectorAll('.reply-tab-btn').forEach(t => {
+                        if (t.dataset.tab === 'all') t.classList.add('active');
+                        else t.classList.remove('active');
+                    });
+                    if (typeof renderReplyLibrary === 'function') renderReplyLibrary();
+                }
                 if (titleEl) titleEl.textContent = '回复库';
-                // 恢复回复库的 tab 状态
-                document.querySelectorAll('.reply-tab-btn').forEach(t => {
-                    if (t.dataset.tab === 'all') t.classList.add('active');
-                    else t.classList.remove('active');
-                });
-                renderReplyLibrary();
             } else if (major === 'atmosphere') {
-                if (listPanel) listPanel.style.display = 'block';
+                if (listPanel) {
+                    listPanel.style.display = 'block';
+                    document.querySelectorAll('.reply-tab-btn').forEach(t => {
+                        if (t.dataset.tab === 'atmosphere') t.classList.add('active');
+                        else t.classList.remove('active');
+                    });
+                    if (typeof renderAtmosphereLibrary === 'function') renderAtmosphereLibrary();
+                }
                 if (titleEl) titleEl.textContent = '氛围感';
-                // 切换氛围感标签
-                document.querySelectorAll('.reply-tab-btn').forEach(t => {
-                    if (t.dataset.tab === 'atmosphere') t.classList.add('active');
-                    else t.classList.remove('active');
-                });
-                renderAtmosphereLibrary();
             } else if (major === 'announcement') {
                 if (announcePanel) announcePanel.style.display = 'block';
                 if (titleEl) titleEl.textContent = '公告';
             } else if (major === 'voice') {
                 if (voicePanel) voicePanel.style.display = 'block';
                 if (titleEl) titleEl.textContent = '语音字卡';
-                renderVoiceList(); // 刷新列表
+                renderVoiceList();
+                updateVoiceCount();
             }
         });
     });
-});
 
-console.log('🎤 语音字卡模块已加载');
+    console.log('🎤 语音字卡模块加载完成 ✅');
+});
