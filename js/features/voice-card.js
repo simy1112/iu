@@ -223,10 +223,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (typeof renderAtmosphereLibrary === 'function') renderAtmosphereLibrary();
                 }
                 if (titleEl) titleEl.textContent = '氛围感';
-            } else if (major === 'announcement') {
-                if (announcePanel) announcePanel.style.display = 'block';
-                if (titleEl) titleEl.textContent = '公告';
-            } else if (major === 'voice') {
+         else if (major === 'voice') {
                 if (voicePanel) voicePanel.style.display = 'block';
                 if (titleEl) titleEl.textContent = '语音字卡';
                 renderVoiceList();
