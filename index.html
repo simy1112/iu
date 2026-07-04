@@ -1748,6 +1748,10 @@
                 </button>
                 <button class="sidebar-btn" data-major="announcement" onclick="switchToAnnouncementPanel()">
                     <i class="fas fa-newspaper"></i>
+                    <button class="sidebar-btn" data-major="voice">
+    <i class="fas fa-microphone-alt"></i>
+    <span>语音字卡</span>
+</button>
                     <span>公告</span>
                 </button>
             </div>
@@ -1855,6 +1859,36 @@
                         </div>
                     </div>
                 </div>
+                                    <!-- ===== 语音字卡面板 ===== -->
+                    <div id="voice-panel" style="display:none; padding:0 16px 16px; flex:1; overflow-y:auto; min-height:0; background:var(--primary-bg);">
+                        <div style="display:flex; flex-direction:column; gap:16px; padding-top:4px;">
+                            <!-- 导入区域 -->
+                            <div style="background:var(--secondary-bg); border-radius:14px; padding:16px; border:1px solid var(--border-color);">
+                                <div style="font-size:13px; font-weight:600; margin-bottom:6px; color:var(--text-primary); display:flex; align-items:center; gap:8px;">
+                                    <i class="fas fa-upload" style="color:var(--accent-color);"></i> 导入语音文件
+                                </div>
+                                <div style="font-size:12px; color:var(--text-secondary); margin-bottom:12px; line-height:1.6;">
+                                    支持 MP3、WAV、M4A、MP4 等，可多选，每条 ≤30MB
+                                </div>
+                                <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                                    <input type="file" id="voice-file-input" accept="audio/*" multiple style="display:none;">
+                                    <button onclick="document.getElementById('voice-file-input').click()" style="padding:10px 20px; background:var(--accent-color); color:#fff; border:none; border-radius:10px; cursor:pointer; font-family:var(--font-family); font-size:13px; font-weight:600; transition:all 0.2s; box-shadow:0 2px 10px rgba(var(--accent-color-rgb),0.25);">
+                                        <i class="fas fa-folder-open"></i> 选择文件
+                                    </button>
+                                    <span style="font-size:12px; color:var(--text-secondary);" id="voice-count-label">共 0 条语音字卡 · 对方回复时随机选一条</span>
+                                </div>
+                            </div>
+
+                            <!-- 语音列表 -->
+                            <div id="voice-list" style="display:flex; flex-direction:column; gap:8px; max-height:280px; overflow-y:auto; padding-right:4px;">
+                                <div style="text-align:center; padding:40px 0; color:var(--text-secondary); font-size:13px; opacity:0.6;">
+                                    <i class="fas fa-microphone" style="display:block; font-size:36px; margin-bottom:12px; opacity:0.25;"></i>
+                                    暂无语音字卡，点上方导入
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ===== 语音字卡面板结束 ===== -->
     
                 <div class="modal-buttons">
                     <button class="modal-btn modal-btn-primary" id="add-custom-reply" style="flex: 1;">
@@ -2227,7 +2261,8 @@
     <script src="js/features/theme-editor.js"></script>
     <script src="js/features/group-chat.js"></script>
     <script src="js/features/call.js"></script>
-
+    <script src="js/features/voice-card.js"></script>
+        
     <!-- == 合并模块 == -->
     <script src="js/games.js"></script> 
     <script src="js/features.js"></script> 
