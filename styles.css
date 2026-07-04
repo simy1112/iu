@@ -10835,3 +10835,36 @@
             border-color: var(--accent-color) !important;
             outline: none;
         }
+
+/* ===== 语音字卡样式 ===== */
+.voice-item {
+    transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.voice-item:hover {
+    border-color: rgba(var(--accent-color-rgb), 0.3) !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+.voice-preview-btn:hover {
+    background: var(--accent-color) !important;
+    color: #fff !important;
+    transform: scale(1.05);
+}
+.voice-delete-btn:hover {
+    background: rgba(255, 71, 87, 0.1) !important;
+    color: #ff4757 !important;
+    transform: scale(1.1);
+}
+
+#voice-list::-webkit-scrollbar {
+    width: 4px;
+}
+#voice-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+#voice-list::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+#voice-list::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-color);
+}
