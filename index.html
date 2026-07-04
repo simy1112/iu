@@ -1737,21 +1737,20 @@
 
     <div class="modal" id="custom-replies-modal">
         <div class="modal-content">
-            <div class="modal-sidebar">
-                <button class="sidebar-btn active" data-major="reply">
-                    <i class="fas fa-comment-dots"></i>
-                    <span>回复库</span>
-                </button>
-                <button class="sidebar-btn" data-major="atmosphere">
-                    <i class="fas fa-magic"></i>
-                    <span>氛围感</span>
-                </button>
-        
-                    <button class="sidebar-btn" data-major="voice">
-    <i class="fas fa-microphone-alt"></i>
-    <span>语音字卡</span>
-</button>
-            </div>
+ <div class="modal-sidebar">
+    <button class="sidebar-btn active" data-major="reply" onclick="switchPanel('reply')">
+        <i class="fas fa-comment-dots"></i>
+        <span>回复库</span>
+    </button>
+    <button class="sidebar-btn" data-major="atmosphere" onclick="switchPanel('atmosphere')">
+        <i class="fas fa-magic"></i>
+        <span>氛围感</span>
+    </button>
+    <button class="sidebar-btn" data-major="voice" onclick="switchPanel('voice')">
+        <i class="fas fa-microphone-alt"></i>
+        <span>语音字卡</span>
+    </button>
+</div>
     
             <div class="modal-main-view">
                 <div class="modal-title" style="padding: 15px 20px; font-size: 16px;">
@@ -1767,36 +1766,39 @@
 
    
 
-                                  <!-- ===== 语音字卡面板 ===== -->
-                    <div id="voice-panel" style="display:none; padding:0 16px 16px; flex:1; overflow-y:auto; min-height:0; background:var(--primary-bg);">
-                        <div style="display:flex; flex-direction:column; gap:16px; padding-top:4px;">
-                            <!-- 导入区域 -->
-                            <div style="background:var(--secondary-bg); border-radius:14px; padding:16px; border:1px solid var(--border-color);">
-                                <div style="font-size:13px; font-weight:600; margin-bottom:6px; color:var(--text-primary); display:flex; align-items:center; gap:8px;">
-                                    <i class="fas fa-upload" style="color:var(--accent-color);"></i> 导入语音文件
-                                </div>
-                                <div style="font-size:12px; color:var(--text-secondary); margin-bottom:12px; line-height:1.6;">
-                                    支持 MP3、WAV、M4A、MP4 等，可多选，每条 ≤30MB
-                                </div>
-                                <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
-                                    <input type="file" id="voice-file-input" accept="audio/*" multiple style="display:none;">
-                                    <button onclick="document.getElementById('voice-file-input').click()" style="padding:10px 20px; background:var(--accent-color); color:#fff; border:none; border-radius:10px; cursor:pointer; font-family:var(--font-family); font-size:13px; font-weight:600; transition:all 0.2s; box-shadow:0 2px 10px rgba(var(--accent-color-rgb),0.25);">
-                                        <i class="fas fa-folder-open"></i> 选择文件
-                                    </button>
-                                    <span style="font-size:12px; color:var(--text-secondary);" id="voice-count-label">共 0 条语音字卡 · 对方回复时随机选一条</span>
-                                </div>
-                            </div>
+        <!-- ===== 语音字卡面板 ===== -->
+<div id="voice-panel" style="display:none; padding:0 16px 16px; flex:1; overflow-y:auto; min-height:0; background:var(--primary-bg);">
+    <div style="display:flex; flex-direction:column; gap:16px; padding-top:4px;">
+        <!-- 导入区域 -->
+        <div style="background:var(--secondary-bg); border-radius:14px; padding:16px; border:1px solid var(--border-color);">
+            <div style="font-size:13px; font-weight:600; margin-bottom:6px; color:var(--text-primary); display:flex; align-items:center; gap:8px;">
+                <i class="fas fa-upload" style="color:var(--accent-color);"></i> 导入语音文件
+            </div>
+            <div style="font-size:12px; color:var(--text-secondary); margin-bottom:12px; line-height:1.6;">
+                支持 MP3、WAV、M4A、MP4 等，可多选，每条 ≤30MB
+            </div>
+            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                <!-- 文件选择 input -->
+                <input type="file" id="voice-file-input" accept="audio/*" multiple style="display:none;">
+                <!-- 选择文件按钮 -->
+                <button onclick="document.getElementById('voice-file-input').click()" style="padding:10px 20px; background:var(--accent-color); color:#fff; border:none; border-radius:10px; cursor:pointer; font-family:var(--font-family); font-size:13px; font-weight:600; transition:all 0.2s; box-shadow:0 2px 10px rgba(var(--accent-color-rgb),0.25);">
+                    <i class="fas fa-folder-open"></i> 选择文件
+                </button>
+                <!-- 语音数量标签 -->
+                <span style="font-size:12px; color:var(--text-secondary);" id="voice-count-label">共 0 条语音字卡 · 对方回复时随机选一条</span>
+            </div>
+        </div>
 
-                            <!-- 语音列表 -->
-                            <div id="voice-list" style="display:flex; flex-direction:column; gap:8px; max-height:280px; overflow-y:auto; padding-right:4px;">
-                                <div style="text-align:center; padding:40px 0; color:var(--text-secondary); font-size:13px; opacity:0.6;">
-                                    <i class="fas fa-microphone" style="display:block; font-size:36px; margin-bottom:12px; opacity:0.25;"></i>
-                                    暂无语音字卡，点上方导入
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- ===== 语音字卡面板结束 ===== -->
+        <!-- 语音列表 -->
+        <div id="voice-list" style="display:flex; flex-direction:column; gap:8px; max-height:280px; overflow-y:auto; padding-right:4px;">
+            <div style="text-align:center; padding:40px 0; color:var(--text-secondary); font-size:13px; opacity:0.6;">
+                <i class="fas fa-microphone" style="display:block; font-size:36px; margin-bottom:12px; opacity:0.25;"></i>
+                暂无语音字卡，点上方导入
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ===== 语音字卡面板结束 ===== -->
     
                 <div class="modal-buttons">
                     <button class="modal-btn modal-btn-primary" id="add-custom-reply" style="flex: 1;">
@@ -2170,7 +2172,58 @@
     <script src="js/features/group-chat.js"></script>
     <script src="js/features/call.js"></script>
     <script src="js/features/voice-card.js"></script>
-        
+
+        <script>
+// 面板切换函数（直接写在 HTML 中，确保执行）
+function switchPanel(major) {
+    // 1. 更新按钮状态
+    document.querySelectorAll('.sidebar-btn[data-major]').forEach(b => {
+        b.classList.remove('active');
+    });
+    document.querySelector(`.sidebar-btn[data-major="${major}"]`)?.classList.add('active');
+
+    // 2. 获取面板
+    const listPanel = document.getElementById('custom-replies-list');
+    const voicePanel = document.getElementById('voice-panel');
+    const titleEl = document.getElementById('cr-modal-title');
+
+    // 3. 全部隐藏
+    if (listPanel) listPanel.style.display = 'none';
+    if (voicePanel) voicePanel.style.display = 'none';
+
+    // 4. 显示对应的
+    if (major === 'reply' || major === 'atmosphere') {
+        if (listPanel) {
+            listPanel.style.display = 'block';
+            // 切换子标签（主字卡 / Emoji / 表情库）
+            if (major === 'reply') {
+                document.querySelectorAll('.reply-tab-btn').forEach(t => {
+                    t.classList.toggle('active', t.dataset.tab === 'all');
+                });
+                if (typeof renderReplyLibrary === 'function') renderReplyLibrary();
+            } else {
+                document.querySelectorAll('.reply-tab-btn').forEach(t => {
+                    t.classList.toggle('active', t.dataset.tab === 'atmosphere');
+                });
+                if (typeof renderAtmosphereLibrary === 'function') renderAtmosphereLibrary();
+            }
+        }
+        if (titleEl) titleEl.textContent = major === 'reply' ? '回复库' : '氛围感';
+    } else if (major === 'voice') {
+        if (voicePanel) voicePanel.style.display = 'block';
+        if (titleEl) titleEl.textContent = '语音字卡';
+        // 刷新语音列表（如果有这个函数）
+        if (typeof renderVoiceList === 'function') renderVoiceList();
+        if (typeof updateVoiceCount === 'function') updateVoiceCount();
+    }
+}
+
+// 页面加载完成后，默认激活回复库
+document.addEventListener('DOMContentLoaded', function() {
+    // 确保默认显示回复库
+    switchPanel('reply');
+});
+</script>
     <!-- == 合并模块 == -->
     <script src="js/games.js"></script> 
     <script src="js/features.js"></script> 
